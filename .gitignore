@@ -1,0 +1,6 @@
+.pio
+.pioenvs
+.piolibdeps
+.travis.yml
+lib/esp8266-base
+.vscode/*
