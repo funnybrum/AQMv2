@@ -2,13 +2,15 @@
 
 #include "InfluxDBCollector.h"
 
-class DataCollector {
+class DataCollector: public InfluxDBCollector {
     public:
-        void begin();
-        void loop();
-        void get_config_page(char* buf);
-        void parse_config_params(WebServerBase* webServer, bool& save);
-
+        DataCollector();
+        void collectData(InfluxDBCollector* collector);
+        void onPush();
+        bool shouldPush();
     private:
-        InfluxDBCollector *influxDBCollector;
+        int lastCO2 = -1;
+        int lastPushedCO2 = -1;
+        float lastTemp = -1;
+        float lastPushedTemp = -1;
 };

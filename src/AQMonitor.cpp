@@ -41,5 +41,12 @@ void loop() {
     co2.loop();
     dataCollector.loop();
 
+    if (settingsData.influxDB.enable) {
+        dataCollector.start();
+    } else {
+        dataCollector.stop();
+    }
+
+
     delay(100);
 }
