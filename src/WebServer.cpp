@@ -10,6 +10,7 @@ void WebServer::registerHandlers() {
     server->on("/", std::bind(&WebServer::handle_root, this));
     server->on("/settings", std::bind(&WebServer::handle_settings, this));
     server->on("/get", std::bind(&WebServer::handle_get, this));
+    server->on("/stats", std::bind(&WebServer::handle_stats, this));
 }
 
 void WebServer::handle_root() {
@@ -50,4 +51,12 @@ void WebServer::handle_get() {
               tempSensor.getPressure(),
               co2.getCO2());
     server->send(200, "application/json", buffer);
+}
+
+void WebServer::handle_stats() {
+    sprintf(buffer,
+            "Uptime: %lus. Free heap: %u",
+            millis()/1000,
+            ESP.getFreeHeap());
+    server->send(200, "text/plain", buffer);
 }
