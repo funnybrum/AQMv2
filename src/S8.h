@@ -4,6 +4,9 @@
 
 #define CO2_READ_INTERVAL 5000
 // #define CO2_DEBUG
+#ifndef CO2_DEBUG
+    #pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 
 /**
  * Very basic Sensair S8 driver. Pull the CO2 values from the sensor based on predefined interval.
@@ -21,7 +24,7 @@ class SensairS8 {
             inputPos = 0;
         }
 
-        double loop() {
+        void loop() {
             // If CO2_READ_INTERVAL has passed - send a CO2 read command.
             unsigned long timeSinceLastStateUpdate = millis() - this->lastRead;
             if (timeSinceLastStateUpdate > CO2_READ_INTERVAL) {
