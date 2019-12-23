@@ -3,7 +3,7 @@
 #include "AQMonitor.h"
 #include "cactus_io_BME280_I2C.h"
 
-#define BME280_READ_INTERVAL 10000
+#define BME280_READ_INTERVAL 5000
 
 // #define BME_DEBUG
 

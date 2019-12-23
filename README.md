@@ -10,7 +10,7 @@ Still work in progress. The PCB is available at [EasyEDA](https://easyeda.com/fu
 ## Over-the-air programming
 
 The firmware supports OTA update. Below curl command executed from the project root will perform the update:
-> curl -F "image=@.pioenvs/d1_mini/firmware.bin" br-aq-monitor1/update
+> curl -F "image=@.pio/build/esp8285/firmware.bin" aq-monitor/update
 
 ## InfluxDB integration
 

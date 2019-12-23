@@ -2,12 +2,12 @@
 
 #include "AQMonitor.h"
 
-#define CO2_READ_INTERVAL 10000
+#define CO2_READ_INTERVAL 5000
 // #define CO2_DEBUG
 
 /**
  * Very basic Sensair S8 driver. Pull the CO2 values from the sensor based on predefined interval.
- * The sensor must be connected on the hardware serial pins of the microcontroller.
+ * The sensor must be connected on the default serial pins of the microcontroller.
  */
 
 class SensairS8 {
