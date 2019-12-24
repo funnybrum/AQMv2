@@ -54,9 +54,9 @@ void WebServer::handle_get() {
 }
 
 void WebServer::handle_stats() {
-    sprintf(buffer,
-            "Uptime: %lus. Free heap: %u",
-            millis()/1000,
-            ESP.getFreeHeap());
+    sprintf_P(buffer,
+              PSTR("Uptime: %lus. Free heap: %u"),
+              millis()/1000,
+              ESP.getFreeHeap());
     server->send(200, "text/plain", buffer);
 }
