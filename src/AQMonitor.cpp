@@ -1,14 +1,10 @@
 #include "AQMonitor.h"
 
-void initSettings() {
-    strcpy(settingsData.network.hostname, HOSTNAME);
-}
-
-SettingsData settingsData = SettingsData();
 Logger logger = Logger(false);
-Settings settings = Settings(&logger, (void*)(&settingsData), sizeof(SettingsData), initSettings);
-WiFiManager wifi = WiFiManager(&logger, &settingsData.network);
-WebServer webServer = WebServer(&settingsData.network, &logger);
+Settings settings = Settings();
+
+WiFiManager wifi = WiFiManager(&logger, &settings.getSettings()->network);
+WebServer webServer = WebServer(&logger, &settings.getSettings()->network);
 
 DataCollector dataCollector = DataCollector();
 BoschBME280 tempSensor = BoschBME280();
@@ -40,13 +36,6 @@ void loop() {
     tempSensor.loop();
     co2.loop();
     dataCollector.loop();
-
-    if (settingsData.influxDB.enable) {
-        dataCollector.start();
-    } else {
-        dataCollector.stop();
-    }
-
 
     delay(100);
 }

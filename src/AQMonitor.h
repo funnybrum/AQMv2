@@ -9,26 +9,17 @@
 
 #include "esp8266-base.h"
 
+extern Logger logger;
+extern Settings settings;
+extern WiFiManager wifi;
+
 #include "BME280.h"
 #include "S8.h"
 #include "DataCollector.h"
 
-#define HTTP_PORT 80
-#define HOSTNAME "aq-monitor"
-
-struct SettingsData {
-    NetworkSettings network;
-    struct InfluxDBCollectorSettings influxDB;
-    struct AQSensor {
-        int16_t temperatureOffset;
-        int16_t humidityOffset;
-    } aqSensor;
-};
-
-extern Logger logger;
-extern Settings settings;
-extern SettingsData settingsData;
-extern WiFiManager wifi;
 extern BoschBME280 tempSensor;
 extern SensairS8 co2;
 extern DataCollector dataCollector;
+
+#define HTTP_PORT 80
+#define HOSTNAME "aq-monitor"

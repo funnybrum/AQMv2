@@ -1,11 +1,11 @@
-#include "DataCollector.h"
 #include "AQMonitor.h"
+#include "DataCollector.h"
 
 DataCollector::DataCollector():
     InfluxDBCollector(&logger,
                       &wifi,
-                      &settingsData.influxDB,
-                      &settingsData.network) {
+                      &settings.getSettings()->influxDB,
+                      &settings.getSettings()->network) {
 }
 
 void DataCollector::collectData(InfluxDBCollector* collector) {
