@@ -23,6 +23,7 @@ void WebServer::handle_settings() {
 
     wifi.parse_config_params(this, save);
     dataCollector.parse_config_params(this, save);
+    tempSensor.parse_config_params(this, save);
 
     if (save) {
         settings.save();
@@ -34,12 +35,16 @@ void WebServer::handle_settings() {
     char data_collector_settings[strlen_P(INFLUXDB_CONFIG_PAGE) + 96];
     dataCollector.get_config_page(data_collector_settings);
 
+    char temp_sensor_settings[strlen_P(BME280_CONFIG_PAGE) + 16];
+    tempSensor.get_config_page(temp_sensor_settings);
+
 
     sprintf_P(
         buffer,
         CONFIG_PAGE,
         network_settings,
-        data_collector_settings);
+        data_collector_settings,
+        temp_sensor_settings);
     server->send(200, "text/html", buffer);
 }
 
@@ -48,6 +53,7 @@ void WebServer::handle_get() {
               GET_JSON,
               tempSensor.getTemperature(),
               tempSensor.getHumidity(),
+              tempSensor.getAbsoluteHimidity(),
               tempSensor.getPressure(),
               co2.getCO2());
     server->send(200, "application/json", buffer);

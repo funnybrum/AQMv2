@@ -3,10 +3,12 @@
 #include "SettingsBase.h"
 #include "WiFi.h"
 #include "InfluxDBCollector.h"
+#include "BME280.h"
 
 struct SettingsData {
     NetworkSettings network;
     InfluxDBCollectorSettings influxDB;
+    BME280Settings bme280;
     struct AQSensor {
         int16_t temperatureOffset;
         int16_t humidityOffset;

@@ -18,6 +18,7 @@ void DataCollector::collectData(InfluxDBCollector* collector) {
     collector->append("co2", co2.getCO2());
     collector->append("temperature", tempSensor.getTemperature(), 2);
     collector->append("humidity", tempSensor.getHumidity(), 1);
+    collector->append("abs_humidity", tempSensor.getHumidity(), 1);
     collector->append("pressure", tempSensor.getPressure());
 }
 

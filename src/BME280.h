@@ -1,61 +1,42 @@
 #pragma once
 
-#include "AQMonitor.h"
 #include "Bme280BoschWrapper.h"
 
 #define BME280_READ_INTERVAL 5000
 
-// #define BME_DEBUG
+struct BME280Settings {
+    int8_t temperatureOffset;  // In 0.1C
+    int8_t pressureOffset;     // In mbar
+};
+
+const char BME280_CONFIG_PAGE[] PROGMEM = R"=====(
+<fieldset style='display: inline-block; width: 300px'>
+<legend>BME280 settings</legend>
+Temperature offset:<br>
+<input type="text" name="temp_offset" value="%d"><br>
+<small><em>in 0.1 degrees, from -125 to 125</em></small><br><br>
+Pressure offset:<br>
+<input type="text" name="pressure_offset" value="%d"><br>
+<small><em>in mbar, from -125 to 125</em></small><br><br>
+</fieldset>
+)=====";
 
 class BoschBME280 {
     public:
-        float getTemperature() {
-            return this->temp;
-        }
+        void begin();
+        void loop();
 
-        float getHumidity() {
-            return this->humidity;
-        }
+        float getTemperature();
+        float getHumidity();
+        int getPressure();
+        float getAbsoluteHimidity();
 
-        int getPressure() {
-            return this->pressure;
-        }
-
-        void begin() {
-            sensorFound = bme280.beginI2C(0x77);
-            logger.log("BME280 beginI2C result: %s", sensorFound ? "true" : "false");
-            this->lastRead = millis() - BME280_READ_INTERVAL + 200;
-        }
-
-        void loop() {
-            if (!sensorFound) {
-                return;
-            }
-
-            unsigned long timeSinceLastStateUpdate = millis() - this->lastRead;
-            if (timeSinceLastStateUpdate > BME280_READ_INTERVAL) {
-                lastRead = millis();
-                #ifdef BME_DEBUG
-                    logger.log("[BME280] Reading temp...");
-                #endif
-                bool ok = bme280.measure();
-                if (ok) {
-                    temp = bme280.getTemperature() / 100.0;  // 100 * C
-                    humidity = bme280.getHumidity() / 1024.0;  // 1024 * % relative humidity
-                    pressure = bme280.getPressure() / 100;  // From Pa to millibar
-                } else {
-                    logger.log("Failed on BME280 .measure()");
-                }
-
-                #ifdef BME_DEBUG
-                    logger.log("Temp: %.1f", this->temp);
-                    logger.log("Humidity: %.0f", this->humidity);
-                    logger.log("Pressure: %d", this->pressure);
-                #endif
-            }
-        }
+        void get_config_page(char* buffer);
+        void parse_config_params(WebServerBase* webServer, bool& save);
 
     private:
+        float rhToAh(float rh, float temp);
+
         float temp;
         float humidity;
         int pressure;
