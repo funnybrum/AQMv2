@@ -1,0 +1,1 @@
+Downloaded from https://github.com/janw-cz/JWA_BME280. Updated with latest Bosch driver (3.3.7) from https://github.com/BoschSensortec/BME280_driver/releases.

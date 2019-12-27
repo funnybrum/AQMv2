@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AQMonitor.h"
-#include "cactus_io_BME280_I2C.h"
+#include "Bme280BoschWrapper.h"
 
 #define BME280_READ_INTERVAL 5000
 
@@ -22,8 +22,8 @@ class BoschBME280 {
         }
 
         void begin() {
-            sensorFound = this->bme280.begin(&logger);
-            logger.log("BME280 begin result: %s", sensorFound ? "true" : "false");
+            sensorFound = bme280.beginI2C(0x77);
+            logger.log("BME280 beginI2C result: %s", sensorFound ? "true" : "false");
             this->lastRead = millis() - BME280_READ_INTERVAL + 200;
         }
 
@@ -38,11 +38,14 @@ class BoschBME280 {
                 #ifdef BME_DEBUG
                     logger.log("[BME280] Reading temp...");
                 #endif
-                delay(100);
-                this->bme280.readSensor();
-                temp = this->bme280.getTemperature_C();
-                humidity = this->bme280.getHumidity();
-                pressure = this->bme280.getPressure_MB();
+                bool ok = bme280.measure();
+                if (ok) {
+                    temp = bme280.getTemperature() / 100.0;  // 100 * C
+                    humidity = bme280.getHumidity() / 1024.0;  // 1024 * % relative humidity
+                    pressure = bme280.getPressure() / 100;  // From Pa to millibar
+                } else {
+                    logger.log("Failed on BME280 .measure()");
+                }
 
                 #ifdef BME_DEBUG
                     logger.log("Temp: %.1f", this->temp);
@@ -58,5 +61,5 @@ class BoschBME280 {
         int pressure;
         unsigned long lastRead;
         bool sensorFound;
-        BME280_I2C bme280 = BME280_I2C();
+        Bme280BoschWrapper bme280 = Bme280BoschWrapper(true);
 };
