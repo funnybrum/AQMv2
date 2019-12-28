@@ -52,7 +52,9 @@ void WebServer::handle_get() {
     sprintf_P(buffer,
               GET_JSON,
               tempSensor.getTemperature(),
+              tempSensor.getRawTemperature(),
               tempSensor.getHumidity(),
+              tempSensor.getRawHumidity(),
               tempSensor.getAbsoluteHimidity(),
               tempSensor.getPressure(),
               co2.getCO2());

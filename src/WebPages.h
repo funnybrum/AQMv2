@@ -21,8 +21,10 @@ const char CONFIG_PAGE[] PROGMEM = R"=====(
 
 const char GET_JSON[] PROGMEM = R"=====({
  "temp":%.1f,
+ "raw_temp":%.1f,
  "humidity":%.1f,
- "abs_humidity": %.1f
+ "raw_humidity":%.1f,
+ "abs_humidity": %.1f,
  "pressure":%d,
  "co2":%d
 })=====";
