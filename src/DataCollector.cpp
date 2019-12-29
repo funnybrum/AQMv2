@@ -8,18 +8,23 @@ DataCollector::DataCollector():
                       &settings.getSettings()->network) {
 }
 
-void DataCollector::collectData(InfluxDBCollector* collector) {
+bool DataCollector::shouldCollect() {
+    return co2.getCO2() > 0 && tempSensor.getPressure() > 100;
+}
+
+void DataCollector::collectData() {
     lastCO2 = co2.getCO2();
     lastTemp = tempSensor.getTemperature() * 10;
     if (lastPushedCO2 < 0) {
         lastPushedCO2 = lastCO2;
         lastPushedTemp = lastTemp;
     }
-    collector->append("co2", co2.getCO2());
-    collector->append("temperature", tempSensor.getTemperature(), 2);
-    collector->append("humidity", tempSensor.getHumidity(), 1);
-    collector->append("abs_humidity", tempSensor.getAbsoluteHimidity(), 2);
-    collector->append("pressure", tempSensor.getPressure(), 1);
+    append("co2", co2.getCO2());
+    append("temperature", tempSensor.getTemperature(), 2);
+    append("humidity", tempSensor.getHumidity(), 1);
+    append("abs_humidity", tempSensor.getAbsoluteHimidity(), 2);
+    append("pressure", tempSensor.getPressure(), 1);
+    append("uptime", millis() / 1000);
 }
 
 bool DataCollector::shouldPush() {

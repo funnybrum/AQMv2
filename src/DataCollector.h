@@ -5,7 +5,8 @@
 class DataCollector: public InfluxDBCollector {
     public:
         DataCollector();
-        void collectData(InfluxDBCollector* collector);
+        bool shouldCollect();
+        void collectData();
         void onPush();
         bool shouldPush();
     private:
