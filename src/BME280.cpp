@@ -24,7 +24,7 @@ void BoschBME280::loop() {
         if (ok) {
             raw_temp = temp = bme280.getTemperature() / 100.0;  // 100 * C
             raw_humidity = humidity = bme280.getHumidity() / 1024.0;  // 1024 * % relative humidity
-            pressure = bme280.getPressure() / 10000;  // From 100 * Pa to hPa/mbar
+            pressure = bme280.getPressure() / 10000.0;  // From 100 * Pa to mbar
 
             // Apply corrections
             // 1. Apply relative humidity factor and offset. This is for BME280 sensors that still
@@ -92,7 +92,7 @@ float BoschBME280::getRawHumidity() {
     return raw_humidity;
 }
 
-int BoschBME280::getPressure() {
+float BoschBME280::getPressure() {
     return pressure;
 }
 

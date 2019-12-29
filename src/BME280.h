@@ -39,7 +39,7 @@ class BoschBME280 {
         float getRawTemperature();
         float getHumidity();
         float getRawHumidity();
-        int getPressure();
+        float getPressure();
         float getAbsoluteHimidity();
 
         void get_config_page(char* buffer);
