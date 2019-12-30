@@ -41,8 +41,8 @@ bool DataCollector::shouldPush() {
         return true;
     }
 
-    if (abs(lastPushedTemp - lastTemp) > 1.0) {
-        logger.log("Push b, %d, %d", lastPushedTemp, lastTemp);
+    if (fabsf(lastPushedTemp - lastTemp) > 1.0) {
+        logger.log("Push b, %f, %f", lastPushedTemp, lastTemp);
         return true;
     }
 
