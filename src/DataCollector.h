@@ -14,4 +14,6 @@ class DataCollector: public InfluxDBCollector {
         int lastPushedCO2 = -1;
         float lastTemp = -1;
         float lastPushedTemp = -1;
+        float lastHumidity = -1;
+        float lastPushedHumidity = -1;
 };

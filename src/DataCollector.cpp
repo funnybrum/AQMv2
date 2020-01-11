@@ -14,10 +14,12 @@ bool DataCollector::shouldCollect() {
 
 void DataCollector::collectData() {
     lastCO2 = co2.getCO2();
-    lastTemp = tempSensor.getTemperature() * 10;
+    lastTemp = tempSensor.getTemperature();
+    lastHumidity = tempSensor.getHumidity();
     if (lastPushedCO2 < 0) {
         lastPushedCO2 = lastCO2;
         lastPushedTemp = lastTemp;
+        lastPushedHumidity = lastHumidity;
     }
     append("co2", co2.getCO2());
     append("temperature", tempSensor.getTemperature(), 2);
@@ -37,12 +39,14 @@ bool DataCollector::shouldPush() {
 
     float co2ratio = 1.0 * lastPushedCO2 / lastCO2;
     if (co2ratio <= 0.8f || co2ratio >= 1.2f) {
-        logger.log("Push a, %d, %d", lastPushedCO2, lastCO2);
         return true;
     }
 
     if (fabsf(lastPushedTemp - lastTemp) > 1.0) {
-        logger.log("Push b, %f, %f", lastPushedTemp, lastTemp);
+        return true;
+    }
+
+    if (fabsf(lastPushedHumidity - lastHumidity) > 5.0) {
         return true;
     }
 
@@ -52,4 +56,5 @@ bool DataCollector::shouldPush() {
 void DataCollector::onPush() {
     lastPushedCO2 = lastCO2;
     lastPushedTemp = lastTemp;
+    lastPushedHumidity = lastHumidity;
 }
