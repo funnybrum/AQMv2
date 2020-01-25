@@ -9,6 +9,7 @@ WebServer webServer = WebServer(&logger, &settings.getSettings()->network);
 DataCollector dataCollector = DataCollector();
 BoschBME280 tempSensor = BoschBME280();
 SensairS8 co2 = SensairS8();
+PlantowerPMSx003 pm = PlantowerPMSx003();
 
 void setup()
 { 
@@ -21,6 +22,7 @@ void setup()
 
     tempSensor.begin();
     co2.begin();
+    pm.begin();
     dataCollector.begin();
 
     // pinMode(12, OUTPUT);
@@ -35,6 +37,7 @@ void loop() {
 
     tempSensor.loop();
     co2.loop();
+    pm.loop();
     dataCollector.loop();
 
     delay(100);

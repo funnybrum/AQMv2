@@ -57,7 +57,10 @@ void WebServer::handle_get() {
               tempSensor.getRawHumidity(),
               tempSensor.getAbsoluteHimidity(),
               tempSensor.getPressure(),
-              co2.getCO2());
+              co2.getCO2(),
+              pm.getPM01(),
+              pm.getPM02(),
+              pm.getPM10());
     server->send(200, "application/json", buffer);
 }
 

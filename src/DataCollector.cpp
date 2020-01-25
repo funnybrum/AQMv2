@@ -22,6 +22,9 @@ void DataCollector::collectData() {
         lastPushedHumidity = lastHumidity;
     }
     append("co2", co2.getCO2());
+    append("pm_1.0", pm.getPM01());
+    append("pm_2.5", pm.getPM02());
+    append("pm_10", pm.getPM10());
     append("temperature", tempSensor.getTemperature(), 2);
     append("humidity", tempSensor.getHumidity(), 1);
     append("abs_humidity", tempSensor.getAbsoluteHimidity(), 2);

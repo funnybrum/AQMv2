@@ -26,5 +26,8 @@ const char GET_JSON[] PROGMEM = R"=====({
  "raw_humidity":%.1f,
  "abs_humidity": %.2f,
  "pressure":%.1f,
- "co2":%d
+ "co2":%d,
+ "pm1.0": %d,
+ "pm2.5": %d,
+ "pm10": %d
 })=====";

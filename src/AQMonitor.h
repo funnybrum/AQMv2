@@ -15,10 +15,12 @@ extern WiFiManager wifi;
 
 #include "BME280.h"
 #include "S8.h"
+#include "PMSx003.h"
 #include "DataCollector.h"
 
 extern BoschBME280 tempSensor;
 extern SensairS8 co2;
+extern PlantowerPMSx003 pm;
 extern DataCollector dataCollector;
 
 #define HTTP_PORT 80
