@@ -9,48 +9,54 @@ DataCollector::DataCollector():
 }
 
 bool DataCollector::shouldCollect() {
-    return co2.getCO2() > 0 && tempSensor.getPressure() > 100;
+    return tempSensor.getPressure() > 100 ||
+           pm.getPM10() > 0 ||
+           co2.getCO2() > 0;
 }
 
 void DataCollector::collectData() {
-    lastCO2 = co2.getCO2();
-    lastTemp = tempSensor.getTemperature();
-    lastHumidity = tempSensor.getHumidity();
-    if (lastPushedCO2 < 0) {
-        lastPushedCO2 = lastCO2;
-        lastPushedTemp = lastTemp;
-        lastPushedHumidity = lastHumidity;
+    if (co2.getCO2() > 0) {
+        append("co2", co2.getCO2());
+
+        lastCO2 = co2.getCO2();
+        if (lastPushedCO2 < 0) {
+            lastPushedCO2 = co2.getCO2(); 
+        }
     }
-    append("co2", co2.getCO2());
-    append("pm_1.0", pm.getPM01());
-    append("pm_2.5", pm.getPM02());
-    append("pm_10", pm.getPM10());
-    append("temperature", tempSensor.getTemperature(), 2);
-    append("humidity", tempSensor.getHumidity(), 1);
-    append("abs_humidity", tempSensor.getAbsoluteHimidity(), 2);
-    append("pressure", tempSensor.getPressure(), 1);
-    // For debug purposes. There seems to be an issue leading to restarts.
-    append("uptime", millis() / 1000);
-    append("free_heap", ESP.getFreeHeap());
-    append("ifx_ptr", telemetryDataSize);
+    if (pm.getPM10() > 0) {
+        append("pm_1.0", pm.getPM01());
+        append("pm_2.5", pm.getPM02());
+        append("pm_10", pm.getPM10());
+    }
+    if (tempSensor.getPressure() > 100) {
+        append("temperature", tempSensor.getTemperature(), 2);
+        append("humidity", tempSensor.getHumidity(), 1);
+        append("abs_humidity", tempSensor.getAbsoluteHimidity(), 2);
+        append("pressure", tempSensor.getPressure(), 1);
+
+        if (lastPushedHumidity < 0) {
+            lastPushedTemp = tempSensor.getTemperature();
+            lastPushedHumidity = tempSensor.getHumidity();
+        }
+        lastTemp = tempSensor.getTemperature();
+        lastHumidity = tempSensor.getHumidity();
+    }
 }
 
 bool DataCollector::shouldPush() {
-    if (lastPushedCO2 < 0) {
-        return false;
-    }
-
     float co2ratio = 1.0 * lastPushedCO2 / lastCO2;
-    if (co2ratio <= 0.8f || co2ratio >= 1.2f) {
+    if (lastPushedCO2 > 0 && (co2ratio <= 0.8f || co2ratio >= 1.2f)) {
         return true;
     }
 
-    if (fabsf(lastPushedTemp - lastTemp) > 1.0) {
-        return true;
-    }
+    if (lastPushedHumidity > 0) {
+        if (fabsf(lastPushedTemp - lastTemp) > 1.0) {
+            return true;
+        }
 
-    if (fabsf(lastPushedHumidity - lastHumidity) > 5.0) {
-        return true;
+        if (fabsf(lastPushedHumidity - lastHumidity) > 5.0) {
+            return true;
+        }
     }
 
     return false;

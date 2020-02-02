@@ -12,4 +12,5 @@ class WebServer: public WebServerBase {
         void handle_root();
         void handle_get();
         void handle_settings();
+        void handle_calibrate();
 };

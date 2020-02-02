@@ -11,6 +11,7 @@ void WebServer::registerHandlers() {
     server->on("/settings", std::bind(&WebServer::handle_settings, this));
     server->on("/get", std::bind(&WebServer::handle_get, this));
     server->on("/stats", std::bind(&WebServer::handle_stats, this));
+    server->on("/calibrate", std::bind(&WebServer::handle_calibrate, this));
 }
 
 void WebServer::handle_root() {
@@ -70,4 +71,9 @@ void WebServer::handle_stats() {
               millis()/1000,
               ESP.getFreeHeap());
     server->send(200, "text/plain", buffer);
+}
+
+void WebServer::handle_calibrate() {
+    bool result = co2.calibrate();
+    server->send(200, "text/plain", result?"Done":"Failed");
 }
