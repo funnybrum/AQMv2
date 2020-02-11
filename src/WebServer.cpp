@@ -11,7 +11,9 @@ void WebServer::registerHandlers() {
     server->on("/settings", std::bind(&WebServer::handle_settings, this));
     server->on("/get", std::bind(&WebServer::handle_get, this));
     server->on("/stats", std::bind(&WebServer::handle_stats, this));
-    server->on("/calibrate", std::bind(&WebServer::handle_calibrate, this));
+    server->on("/calibrate", std::bind(&WebServer::handle_calibrate, this));    
+    server->on("/blink", std::bind(&WebServer::handle_blink, this));
+
 }
 
 void WebServer::handle_root() {
@@ -76,4 +78,13 @@ void WebServer::handle_stats() {
 void WebServer::handle_calibrate() {
     bool result = co2.calibrate();
     server->send(200, "text/plain", result?"Done":"Failed");
+}
+
+void WebServer::handle_blink() {
+    pinMode(12, OUTPUT);
+    digitalWrite(12, LOW);
+    delay(250);
+    digitalWrite(12, HIGH);
+    pinMode(12, INPUT);
+    server->send(200, "text/plain", "Done");
 }
