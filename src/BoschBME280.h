@@ -32,7 +32,7 @@ Humidity offset:<br>
 
 class BoschBME280 {
     public:
-        bool begin(uint8_t addr=0x76);
+        bool begin(uint8_t addr=0x77);
         void loop();
 
         float getTemperature();
@@ -48,7 +48,7 @@ class BoschBME280 {
     private:
         static int8_t I2CRead(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t cnt);
         static int8_t I2CWrite(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t cnt);
-        static void delay(unsigned int);
+        static void delay_ms(unsigned int);
         float rhToAh(float rh, float temp);
 
         float temp;

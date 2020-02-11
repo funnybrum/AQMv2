@@ -7,7 +7,7 @@ bool BoschBME280::begin(uint8_t addr) {
     bme280.intf = BME280_I2C_INTF;
     bme280.write = BoschBME280::I2CWrite;
     bme280.read = BoschBME280::I2CRead;
-    bme280.delay_ms = BoschBME280::delay;
+    bme280.delay_ms = BoschBME280::delay_ms;
     bme280.dev_id = addr;
 
     // Oversampling configuration.
@@ -192,6 +192,6 @@ int8_t BoschBME280::I2CRead(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_dat
     return ret;
 }
 
-void BoschBME280::delay(unsigned int ms) {
+void BoschBME280::delay_ms(unsigned int ms) {
     delay(ms);
 }
