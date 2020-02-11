@@ -13,7 +13,7 @@ extern Logger logger;
 extern Settings settings;
 extern WiFiManager wifi;
 
-#include "BME280.h"
+#include "BoschBME280.h"
 #include "S8.h"
 #include "PMSx003.h"
 #include "DataCollector.h"

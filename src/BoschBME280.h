@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Bme280BoschWrapper.h"
+#include "bme280.h"
 
-#define BME280_READ_INTERVAL 5000
+#define BME280_READ_INTERVAL 1000
 
 struct BME280Settings {
     int8_t temperatureOffset;  // In 0.1C
@@ -32,7 +32,7 @@ Humidity offset:<br>
 
 class BoschBME280 {
     public:
-        void begin();
+        bool begin(uint8_t addr=0x76);
         void loop();
 
         float getTemperature();
@@ -46,6 +46,9 @@ class BoschBME280 {
         void parse_config_params(WebServerBase* webServer, bool& save);
 
     private:
+        static int8_t I2CRead(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t cnt);
+        static int8_t I2CWrite(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t cnt);
+        static void delay(unsigned int);
         float rhToAh(float rh, float temp);
 
         float temp;
@@ -54,6 +57,8 @@ class BoschBME280 {
         float raw_humidity;
         int pressure;
         unsigned long lastRead;
-        bool sensorFound;
-        Bme280BoschWrapper bme280 = Bme280BoschWrapper(true);
+        uint8_t errors = 0;
+        uint32_t req_delay;
+        struct bme280_dev bme280;
+        struct bme280_data comp_data;
 };

@@ -3,7 +3,7 @@
 #include "SettingsBase.h"
 #include "WiFi.h"
 #include "InfluxDBCollector.h"
-#include "BME280.h"
+#include "BoschBME280.h"
 
 struct SettingsData {
     NetworkSettings network;
